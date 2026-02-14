@@ -29,8 +29,12 @@
         .carousel-scene {
             perspective: 1000px;
             overflow: visible;
-            /* Ensure touches work on mobile */
-            touch-action: pan-y;
+            /* Allow vertical scrolling on mobile while swiping */
+            touch-action: pan-y; 
+            cursor: grab;
+        }
+        .carousel-scene:active {
+            cursor: grabbing;
         }
         
         .carousel-track {
@@ -38,14 +42,14 @@
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .carousel-item {
             position: absolute;
             left: 50%;
             top: 50%;
-            /* Responsive Size set via JS/CSS logic */
+            /* Default Mobile Size */
             width: 160px;
             height: 160px;
             margin-left: -80px; 
@@ -53,9 +57,14 @@
             transform-style: preserve-3d;
             backface-visibility: hidden; 
             transition: opacity 0.5s, filter 0.5s;
+            pointer-events: none; /* Let clicks pass through to container for swipes, unless active */
         }
         
-        /* Larger items on desktop */
+        /* Activate pointer events only for the front item if needed */
+        .carousel-item.active {
+            pointer-events: auto;
+        }
+
         @media (min-width: 768px) {
             .carousel-item {
                 width: 200px;
@@ -68,7 +77,7 @@
         .carousel-card {
             width: 100%;
             height: 100%;
-            border-radius: 9999px;
+            border-radius: 50%;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             transition: transform 0.5s, border-color 0.5s, box-shadow 0.5s;
@@ -81,13 +90,17 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .fade-text { animation: fadeIn 0.8s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* FIXED: Smoother fade without the "jumping" motion */
+        .fade-text { 
+            animation: softFade 0.6s ease-out forwards; 
+            opacity: 0;
+        }
+        @keyframes softFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
-        /* Mobile Menu Transition */
+        /* Mobile Menu */
         #mobile-menu {
             transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
             max-height: 0;
@@ -181,7 +194,7 @@
         
         <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
             
-            <div class="carousel-scene h-[350px] md:h-[450px] w-full flex items-center justify-center relative order-1">
+            <div class="carousel-scene h-[350px] md:h-[450px] w-full flex items-center justify-center relative order-1" id="swipeArea">
                 <div class="carousel-track" id="teamTrack">
                     </div>
             </div>
@@ -203,6 +216,10 @@
                     <button onclick="rotate(-1)" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-lg md:text-xl">
                         <i class="fas fa-arrow-right"></i>
                     </button>
+                </div>
+                
+                <div class="block lg:hidden mt-4 text-gray-600 text-[10px] uppercase tracking-widest animate-pulse">
+                    <i class="fas fa-hand-pointer mr-2"></i> Swipe left or right
                 </div>
             </div>
         </div>
@@ -333,16 +350,44 @@
 
         const track = document.getElementById('teamTrack');
         const infoPanel = document.getElementById('memberInfo');
-        let radius = window.innerWidth < 768 ? 160 : 350; // Responsive Radius
+        const swipeArea = document.getElementById('swipeArea');
+        
+        let radius = window.innerWidth < 768 ? 160 : 350; 
         let currDeg = 0;
         let activeIndex = 0;
+        let autoRotate = null;
 
-        // Listen for resize to adjust 3D radius dynamically
+        // --- SWIPE LOGIC ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        swipeArea.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            stopAutoRotate(); // Pause rotation when user touches
+        }, {passive: true});
+
+        swipeArea.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoRotate(); // Resume rotation
+        }, {passive: true});
+
+        function handleSwipe() {
+            const threshold = 50; // Min distance to count as swipe
+            if (touchEndX < touchStartX - threshold) {
+                rotate(1); // Swipe Left -> Next
+            } else if (touchEndX > touchStartX + threshold) {
+                rotate(-1); // Swipe Right -> Prev
+            }
+        }
+
+        // --- RESIZE LOGIC ---
         window.addEventListener('resize', () => {
             radius = window.innerWidth < 768 ? 160 : 350;
             updateView();
         });
 
+        // --- CAROUSEL LOGIC ---
         function init() {
             teamMembers.forEach((member, index) => {
                 const el = document.createElement('div');
@@ -354,13 +399,21 @@
                         <img src="${member.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
                     </div>
                 `;
+                // Click to rotate to specific person
                 el.addEventListener('click', () => {
                     const diff = index - activeIndex;
-                    rotate(-diff);
+                    // Calculate shortest path
+                    const total = teamMembers.length;
+                    let safeDiff = diff;
+                    if (diff > total/2) safeDiff = diff - total;
+                    if (diff < -total/2) safeDiff = diff + total;
+                    
+                    rotate(-safeDiff);
                 });
                 track.appendChild(el);
             });
             updateView();
+            startAutoRotate();
         }
 
         function rotate(dir) {
@@ -368,6 +421,10 @@
             currDeg += dir * step;
             if(dir === -1) activeIndex = (activeIndex + 1) % teamMembers.length;
             if(dir === 1) activeIndex = (activeIndex - 1 + teamMembers.length) % teamMembers.length;
+            // Handle multi-step rotation (from click)
+            if (Math.abs(dir) > 1) {
+                 activeIndex = (activeIndex - dir + teamMembers.length * 10) % teamMembers.length;
+            }
             updateView();
         }
 
@@ -381,14 +438,17 @@
                 let normalized = totalAngle % 360;
                 if (normalized > 180) normalized -= 360;
                 if (normalized < -180) normalized += 360;
+                
                 const rad = normalized * (Math.PI / 180);
                 const depth = Math.cos(rad);
                 
+                // 3D Transforms
                 item.style.transform = `rotateY(${itemAngle}deg) translateZ(${radius}px) rotateY(${-totalAngle}deg)`;
                 
                 const card = item.querySelector('.carousel-card');
                 
                 if (depth > 0.9) { 
+                    item.classList.add('active');
                     item.style.opacity = 1;
                     item.style.filter = 'blur(0px)';
                     item.style.zIndex = 20;
@@ -397,6 +457,7 @@
                     card.style.borderColor = teamMembers[index].color.replace('border-', 'var(--') + ')';
                     card.style.boxShadow = "0 0 40px rgba(34, 150, 166, 0.8)";
                 } else {
+                    item.classList.remove('active');
                     const scale = 0.5 + (depth + 1) * 0.25; 
                     const blur = Math.abs(normalized) / 10;
                     
@@ -409,6 +470,7 @@
                 }
             });
 
+            // Update Text Panel
             const member = teamMembers[activeIndex];
             infoPanel.innerHTML = `
                 <div class="fade-text">
@@ -423,6 +485,21 @@
                 </div>
             `;
         }
+
+        // --- AUTO ROTATE CONTROL ---
+        function startAutoRotate() {
+            if(autoRotate) clearInterval(autoRotate);
+            autoRotate = setInterval(() => rotate(1), 3500); // 3.5 seconds
+        }
+
+        function stopAutoRotate() {
+            if(autoRotate) clearInterval(autoRotate);
+        }
+
+        // Pause on mouse hover (Desktop)
+        const teamSection = document.getElementById('team');
+        teamSection.addEventListener('mouseenter', stopAutoRotate);
+        teamSection.addEventListener('mouseleave', startAutoRotate);
 
         init();
     </script>
