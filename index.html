@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miracle FA | Shaping Future Football Stars</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --miracle-teal: #2296a6;
+            --miracle-gold: #c5a367;
+            --miracle-dark: #0f172a;
+        }
+        .bg-miracle-teal { background-color: var(--miracle-teal); }
+        .text-miracle-teal { color: var(--miracle-teal); }
+        .text-miracle-gold { color: var(--miracle-gold); }
+        .border-miracle-gold { border-color: var(--miracle-gold); }
+        .bg-miracle-gold { background-color: var(--miracle-gold); }
+        
+        html { scroll-behavior: smooth; }
+        .logo-blend { mix-blend-mode: screen; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #2296a6; border-radius: 4px; }
+
+        /* --- REAL 3D CAROUSEL STYLES --- */
+        .carousel-scene {
+            perspective: 1200px;
+            overflow: visible;
+        }
+        
+        .carousel-track {
+            transform-style: preserve-3d;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .carousel-item {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 200px;
+            height: 200px;
+            margin-left: -100px; /* Half of width */
+            margin-top: -100px;  /* Half of height */
+            transform-style: preserve-3d;
+            backface-visibility: hidden; 
+            transition: opacity 0.5s, filter 0.5s;
+        }
+
+        .carousel-card {
+            width: 100%;
+            height: 100%;
+            border-radius: 9999px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transition: transform 0.5s, border-color 0.5s, box-shadow 0.5s;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(to right, #2296a6, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .fade-text { animation: fadeIn 0.8s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white font-sans antialiased">
+
+    <nav class="flex items-center justify-between px-6 py-4 bg-slate-900/95 sticky top-0 z-50 border-b border-slate-800 backdrop-blur-md">
+        <div class="flex items-center gap-3">
+            <img src="logo.png" alt="Miracle FA Logo" class="h-12 w-auto logo-blend">
+            <div class="leading-tight">
+                <span class="block text-xl font-bold tracking-tighter uppercase italic">Miracle <span class="text-miracle-gold">FA</span></span>
+            </div>
+        </div>
+        <div class="hidden xl:flex items-center gap-6 font-bold uppercase text-[11px] tracking-widest">
+            <a href="#home" class="hover:text-miracle-teal transition">Home</a>
+            <a href="#curriculum" class="hover:text-miracle-teal transition">Methodology</a>
+            <a href="#achievements" class="hover:text-miracle-teal transition">Achievements</a>
+            <a href="#team" class="hover:text-miracle-teal transition">Our Team</a>
+            <a href="#locations" class="hover:text-miracle-teal transition">Locations</a>
+            <a href="https://wa.me/917561862377?text=Hi,%20I%20am%20interested%20in%20joining%20Miracle%20FA!" target="_blank" 
+               class="bg-miracle-teal px-5 py-2 rounded-full text-white hover:bg-white hover:text-miracle-teal transition-all shadow-[0_0_15px_rgba(34,150,166,0.3)] flex items-center gap-2">
+                <i class="fab fa-whatsapp text-base"></i> Join Now
+            </a>
+        </div>
+    </nav>
+
+    <section id="home" class="relative min-h-[85vh] flex items-center justify-center text-center px-4 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80" class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-slate-900/90"></div>
+        </div>
+        <div class="relative z-10 max-w-5xl">
+            <span class="inline-block py-1 px-3 rounded border border-miracle-gold text-miracle-gold text-xs font-bold tracking-[0.2em] uppercase mb-6 bg-slate-900/50 backdrop-blur">
+                Miracle Football Academy
+            </span>
+            <h1 class="text-5xl md:text-8xl font-black italic uppercase mb-6 leading-tight drop-shadow-2xl">
+                Shaping Future <span class="text-gradient">Football Stars</span>
+            </h1>
+            <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                The official volunteering partner for the <strong>Decathlon Kipsta Cup</strong> & ball boy partner for the <strong>Santosh Trophy</strong>.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#achievements" class="bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-wide hover:bg-miracle-gold transition-colors">
+                    View Our Legacy
+                </a>
+                <a href="#locations" class="border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 rounded-full font-bold uppercase tracking-wide hover:bg-miracle-teal hover:border-miracle-teal transition-all">
+                    Find Nearest Center
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-miracle-teal py-8 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/20">
+            <div><h3 class="text-3xl font-black italic">15+</h3><p class="text-[10px] font-bold uppercase tracking-widest opacity-80">Friendly Matches</p></div>
+            <div><h3 class="text-3xl font-black italic">2</h3><p class="text-[10px] font-bold uppercase tracking-widest opacity-80">Players in "Next Legend"</p></div>
+            <div><h3 class="text-3xl font-black italic">4+</h3><p class="text-[10px] font-bold uppercase tracking-widest opacity-80">Major Tournaments</p></div>
+            <div><h3 class="text-3xl font-black italic">100%</h3><p class="text-[10px] font-bold uppercase tracking-widest opacity-80">Professional Coaching</p></div>
+        </div>
+    </div>
+
+    <section id="team" class="py-24 px-6 bg-slate-900 overflow-hidden relative min-h-[700px] flex items-center">
+        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-[700px] h-[700px] bg-miracle-teal/5 rounded-full blur-3xl -z-10"></div>
+        
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            
+            <div class="carousel-scene h-[450px] w-full flex items-center justify-center relative">
+                <div class="carousel-track" id="teamTrack">
+                    </div>
+            </div>
+
+            <div class="text-left relative z-20 pl-12 md:pl-32">
+                <div class="mb-8">
+                    <h2 class="text-miracle-gold font-bold tracking-[0.2em] uppercase mb-2">Management & Coaching</h2>
+                    <h3 class="text-4xl md:text-5xl font-black uppercase italic text-white mb-6">Meet The Team</h3>
+                    <div class="w-20 h-1 bg-miracle-teal"></div>
+                </div>
+
+                <div id="memberInfo" class="min-h-[200px] transition-all">
+                    </div>
+
+                <div class="flex gap-4 mt-8">
+                    <button onclick="rotate(1)" class="w-14 h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-xl">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button onclick="rotate(-1)" class="w-14 h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-xl">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="curriculum" class="py-24 px-6 bg-slate-800/30">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-miracle-gold font-bold tracking-[0.2em] uppercase mb-2">Core Structure</h2>
+                <h3 class="text-4xl font-black uppercase italic">Elite Training Methodology</h3>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-slate-900 p-8 rounded-2xl border-t-4 border-miracle-teal hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-running text-4xl text-miracle-teal mb-6"></i>
+                    <h4 class="text-xl font-bold uppercase italic mb-4">Physical</h4>
+                    <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside"><li>Strength & Conditioning</li><li>Speed & Agility (SAQ)</li><li>Endurance & Stamina</li></ul>
+                </div>
+                <div class="bg-slate-900 p-8 rounded-2xl border-t-4 border-miracle-gold hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-chess text-4xl text-miracle-gold mb-6"></i>
+                    <h4 class="text-xl font-bold uppercase italic mb-4">Tactical</h4>
+                    <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside"><li>Game Awareness</li><li>Positional Play</li><li>Match Simulation (11v11)</li></ul>
+                </div>
+                <div class="bg-slate-900 p-8 rounded-2xl border-t-4 border-miracle-teal hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-brain text-4xl text-miracle-teal mb-6"></i>
+                    <h4 class="text-xl font-bold uppercase italic mb-4">Mental</h4>
+                    <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside"><li>Discipline & Behavior</li><li>Confidence Building</li><li>Focus & Concentration</li></ul>
+                </div>
+                <div class="bg-slate-900 p-8 rounded-2xl border-t-4 border-miracle-gold hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-trophy text-4xl text-miracle-gold mb-6"></i>
+                    <h4 class="text-xl font-bold uppercase italic mb-4">Exposure</h4>
+                    <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside"><li>Youth Leagues</li><li>Internal Tournaments</li><li>Pro Player Visits</li></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="py-24 px-6 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-miracle-teal/10 rounded-full blur-3xl -z-10"></div>
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-black uppercase italic mb-12 text-center"><span class="text-miracle-gold">Hall of</span> Fame</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 p-1 rounded-2xl">
+                    <div class="bg-slate-900 h-full rounded-xl p-8 flex flex-col items-start relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fas fa-medal text-9xl"></i></div>
+                        <span class="bg-miracle-gold text-black text-xs font-bold px-3 py-1 rounded uppercase mb-4">Major Honor</span>
+                        <h3 class="text-2xl font-bold uppercase italic mb-4">Santosh Trophy Support</h3>
+                        <p class="text-gray-400">Miracle FA was selected to provide official ball boy support for the prestigious Santosh Trophy State Championship.</p>
+                    </div>
+                </div>
+                <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 p-1 rounded-2xl">
+                    <div class="bg-slate-900 h-full rounded-xl p-8 flex flex-col items-start relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fas fa-star text-9xl"></i></div>
+                        <span class="bg-miracle-teal text-white text-xs font-bold px-3 py-1 rounded uppercase mb-4">Talent Hunt</span>
+                        <h3 class="text-2xl font-bold uppercase italic mb-4">India's Next Legend</h3>
+                        <p class="text-gray-400">In the WAWU Tournament, 2 players from Miracle FA were selected for the "India's Next Legend" program.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="locations" class="py-24 px-6 bg-slate-800/20">
+        <div class="max-w-6xl mx-auto">
+            <h3 class="text-4xl md:text-5xl font-black uppercase italic text-center mb-16">Training Grounds</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="group relative bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-miracle-teal transition-all duration-300">
+                    <div class="h-48 bg-slate-900 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556680262-9990363a3e6d?auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-60">
+                        <div class="absolute bottom-4 left-6"><h4 class="text-3xl font-bold uppercase italic text-white">Kaloor</h4></div>
+                    </div>
+                    <div class="p-6">
+                        <a href="https://wa.me/917561862377?text=Info%20about%20Kaloor%20Location" target="_blank" class="block w-full text-center bg-slate-700 hover:bg-miracle-teal py-3 rounded-lg font-bold uppercase text-sm tracking-wider transition-colors">Inquire Kaloor Batch</a>
+                    </div>
+                </div>
+                <div class="group relative bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-miracle-teal transition-all duration-300">
+                    <div class="h-48 bg-slate-900 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-60">
+                        <div class="absolute bottom-4 left-6"><h4 class="text-3xl font-bold uppercase italic text-white">Arookutty</h4></div>
+                    </div>
+                    <div class="p-6">
+                        <a href="https://wa.me/917561862377?text=Info%20about%20Arookutty%20Location" target="_blank" class="block w-full text-center bg-slate-700 hover:bg-miracle-teal py-3 rounded-lg font-bold uppercase text-sm tracking-wider transition-colors">Inquire Arookutty Batch</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-16 px-6 border-t border-slate-900">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <div class="flex items-center gap-2 justify-center md:justify-start mb-4">
+                    <img src="logo.png" alt="Logo" class="h-10 logo-blend opacity-80">
+                    <span class="font-bold text-xl uppercase italic tracking-tighter">Miracle <span class="text-miracle-teal">FA</span></span>
+                </div>
+                <p class="text-gray-500 text-sm max-w-xs">Forging champions through discipline, teamwork, and tactical excellence.</p>
+            </div>
+            <div class="flex gap-4">
+                <a href="https://wa.me/917561862377" class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-all"><i class="fab fa-whatsapp text-xl"></i></a>
+                <a href="https://www.instagram.com/miraclefa_/" class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center hover:bg-[#E1306C] hover:text-white transition-all"><i class="fab fa-instagram text-xl"></i></a>
+            </div>
+        </div>
+        <div class="text-center mt-12 pt-8 border-t border-slate-900"><p class="text-gray-600 text-xs uppercase tracking-widest">© 2026 Miracle Football Academy</p></div>
+    </footer>
+
+    <script>
+        const teamMembers = [
+            { name: "Imran Babu N", role: "Founder & Manager", img: "founder.png", color: "border-miracle-gold", desc: "The visionary behind Miracle FA, Imran leads the academy with a focus on holistic youth development and management excellence." },
+            { name: "Ashkar N.A", role: "Co-Founder & Head Coach", img: "cofounderandheadcoach.png", color: "border-miracle-teal", desc: "As Head Coach, Ashkar designs our elite training curriculum, ensuring every player masters technical skills and tactical intelligence." },
+            { name: "Vinay Ravinath", role: "Lead Editor", img: "leadeditor.png", color: "border-gray-500", desc: "Capturing the academy's finest moments, Vinay manages all visual content, edits, and media production." },
+            { name: "John Thomas", role: "Asst. Coach", img: "assistantcoach3.png", color: "border-gray-500", desc: "Specializes in defensive drills and organizational discipline on the field, supporting the main coaching staff." },
+            { name: "Ajay Krishna", role: "Freestyler", img: "freestyler.png", color: "border-gray-500", desc: "Brings creativity and flair to the academy, teaching ball mastery, tricks, and advanced coordination skills." },
+            { name: "Ananthakrishnan K.S", role: "Asst. Coach", img: "assistantcoach4.png", color: "border-gray-500", desc: "Focuses on grassroots development, helping younger age groups build a strong foundation in football basics." },
+            { name: "Alen Joseph", role: "Junior Editor", img: "junioreditor.png", color: "border-gray-500", desc: "Assisting the media team with cuts, edits, and visual storytelling to highlight our players' best moments." },
+            { name: "Rizwan", role: "S&C Coach", img: "sccoach.png", color: "border-gray-500", desc: "Specializes in building athletic performance through strength, agility, and conditioning protocols tailored for young footballers." },
+            { name: "Nourin Babu", role: "Academy Counsellor", img: "counsellor.png", color: "border-gray-500", desc: "Provides crucial mental support and guidance, ensuring a healthy balance between sports and personal growth for our students." },
+            { name: "Fathima Jannath", role: "Physiotherapist", img: "physio.png", color: "border-gray-500", desc: "Dedicated to injury prevention and rehabilitation, ensuring our players stay fit and recover effectively from intensive training." },
+            { name: "Sahal", role: "Wellness Coach", img: "wellnesscoach.png", color: "border-gray-500", desc: "Focuses on the overall well-being, nutrition, and lifestyle habits that contribute to a high-performance athlete's career." },
+            { name: "Abnas", role: "Asst. Coach", img: "assistantcoach1.png", color: "border-gray-500", desc: "Works closely with the Head Coach to implement training drills and provide individual feedback to players during sessions." },
+            { name: "Harjith Sathyan", role: "Asst. Coach", img: "assistantcoach2.png", color: "border-gray-500", desc: "Supports squad management and match-day preparations, fostering a disciplined and competitive team environment." }
+        ];
+
+        const track = document.getElementById('teamTrack');
+        const infoPanel = document.getElementById('memberInfo');
+        const radius = 350; // Standard 3D Radius
+        let currDeg = 0;
+        let activeIndex = 0;
+
+        function init() {
+            // Create items
+            teamMembers.forEach((member, index) => {
+                const el = document.createElement('div');
+                el.className = 'carousel-item';
+                
+                // Calculate position around the circle
+                const angle = (360 / teamMembers.length) * index;
+                
+                // Store angle for updates
+                el.dataset.angle = angle;
+                
+                el.innerHTML = `
+                    <div class="carousel-card border-4 ${member.color} relative group">
+                        <img src="${member.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
+                    </div>
+                `;
+                
+                // Click to rotate to this item
+                el.addEventListener('click', () => {
+                    const diff = index - activeIndex;
+                    rotate(-diff);
+                });
+
+                track.appendChild(el);
+            });
+            updateView();
+        }
+
+        function rotate(dir) {
+            const step = 360 / teamMembers.length;
+            currDeg += dir * step;
+            
+            // Update Active Index logic to handle wrapping correctly
+            if(dir === -1) activeIndex = (activeIndex + 1) % teamMembers.length;
+            if(dir === 1) activeIndex = (activeIndex - 1 + teamMembers.length) % teamMembers.length;
+            
+            updateView();
+        }
+
+        function updateView() {
+            // Rotate the entire track
+            track.style.transform = `rotateY(${currDeg}deg)`;
+
+            const items = document.querySelectorAll('.carousel-item');
+            
+            items.forEach((item, index) => {
+                // Calculate the item's current absolute angle relative to the screen
+                // itemAngle + currDeg = 0 (or 360) means it's in front
+                const itemAngle = parseFloat(item.dataset.angle);
+                const totalAngle = itemAngle + currDeg;
+                
+                // Normalize angle to -180 to 180 to determine "frontness"
+                let normalized = totalAngle % 360;
+                if (normalized > 180) normalized -= 360;
+                if (normalized < -180) normalized += 360;
+                
+                // Calculate depth factor (cosine of angle)
+                // 0deg = 1 (front), 180deg = -1 (back)
+                const rad = normalized * (Math.PI / 180);
+                const depth = Math.cos(rad);
+                
+                // --- THE 3D TRANSFORM MAGIC ---
+                // We keep the item at its ring position: rotateY(angle) translateZ(radius)
+                // But we counter-rotate the card itself so it faces the viewer: rotateY(-totalAngle)
+                
+                item.style.transform = `rotateY(${itemAngle}deg) translateZ(${radius}px) rotateY(${-totalAngle}deg)`;
+                
+                // --- DEPTH STYLING ---
+                const card = item.querySelector('.carousel-card');
+                
+                if (depth > 0.9) { // Front item
+                    item.style.opacity = 1;
+                    item.style.filter = 'blur(0px)';
+                    item.style.zIndex = 20;
+                    card.style.transform = 'scale(1.3)'; // Make front item huge
+                    card.querySelector('img').classList.remove('grayscale');
+                    card.style.borderColor = teamMembers[index].color.replace('border-', 'var(--') + ')';
+                    card.style.boxShadow = "0 0 40px rgba(34, 150, 166, 0.8)";
+                } else {
+                    // Items further back get smaller, darker, blurrier
+                    const scale = 0.5 + (depth + 1) * 0.25; // Scale range 0.5 to 1.0
+                    const blur = Math.abs(normalized) / 10; // More angle = more blur
+                    
+                    item.style.opacity = Math.max(0.2, 0.5 + depth * 0.5);
+                    item.style.filter = `blur(${blur}px) brightness(${50 + depth * 50}%)`;
+                    item.style.zIndex = Math.floor((depth + 1) * 10);
+                    card.style.transform = `scale(${scale})`;
+                    card.querySelector('img').classList.add('grayscale');
+                    card.style.boxShadow = "none";
+                }
+            });
+
+            // UPDATE TEXT INFO
+            const member = teamMembers[activeIndex];
+            infoPanel.innerHTML = `
+                <div class="fade-text">
+                    <h4 class="text-4xl font-bold uppercase text-white mb-2">${member.name}</h4>
+                    <p class="text-sm tracking-[0.2em] uppercase font-bold text-miracle-teal mb-6">${member.role}</p>
+                    <p class="text-gray-300 text-lg leading-relaxed mb-6 border-l-4 border-miracle-gold pl-4">
+                        ${member.desc}
+                    </p>
+                    <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500">
+                        <i class="fas fa-check-circle text-miracle-teal"></i> Miracle FA Staff
+                    </span>
+                </div>
+            `;
+        }
+
+        // Start
+        init();
+        
+        // Auto Rotate (Optional - uncomment to enable)
+        // setInterval(() => rotate(-1), 4000);
+
+    </script>
+</body>
+</html>
