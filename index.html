@@ -25,10 +25,12 @@
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #2296a6; border-radius: 4px; }
 
-        /* --- REAL 3D CAROUSEL STYLES --- */
+        /* --- 3D CAROUSEL STYLES --- */
         .carousel-scene {
-            perspective: 1200px;
+            perspective: 1000px;
             overflow: visible;
+            /* Ensure touches work on mobile */
+            touch-action: pan-y;
         }
         
         .carousel-track {
@@ -43,13 +45,24 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            width: 200px;
-            height: 200px;
-            margin-left: -100px; /* Half of width */
-            margin-top: -100px;  /* Half of height */
+            /* Responsive Size set via JS/CSS logic */
+            width: 160px;
+            height: 160px;
+            margin-left: -80px; 
+            margin-top: -80px;
             transform-style: preserve-3d;
             backface-visibility: hidden; 
             transition: opacity 0.5s, filter 0.5s;
+        }
+        
+        /* Larger items on desktop */
+        @media (min-width: 768px) {
+            .carousel-item {
+                width: 200px;
+                height: 200px;
+                margin-left: -100px;
+                margin-top: -100px;
+            }
         }
 
         .carousel-card {
@@ -59,6 +72,7 @@
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             transition: transform 0.5s, border-color 0.5s, box-shadow 0.5s;
+            background: #0f172a;
         }
         
         .text-gradient {
@@ -72,26 +86,57 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Mobile Menu Transition */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+        }
     </style>
 </head>
-<body class="bg-slate-900 text-white font-sans antialiased">
+<body class="bg-slate-900 text-white font-sans antialiased overflow-x-hidden">
 
-    <nav class="flex items-center justify-between px-6 py-4 bg-slate-900/95 sticky top-0 z-50 border-b border-slate-800 backdrop-blur-md">
-        <div class="flex items-center gap-3">
-            <img src="logo.png" alt="Miracle FA Logo" class="h-12 w-auto logo-blend">
-            <div class="leading-tight">
-                <span class="block text-xl font-bold tracking-tighter uppercase italic">Miracle <span class="text-miracle-gold">FA</span></span>
+    <nav class="px-6 py-4 bg-slate-900/95 sticky top-0 z-50 border-b border-slate-800 backdrop-blur-md">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="Miracle FA Logo" class="h-10 md:h-12 w-auto logo-blend">
+                <div class="leading-tight">
+                    <span class="block text-lg md:text-xl font-bold tracking-tighter uppercase italic">Miracle <span class="text-miracle-gold">FA</span></span>
+                </div>
             </div>
+            
+            <div class="hidden lg:flex items-center gap-6 font-bold uppercase text-[11px] tracking-widest">
+                <a href="#home" class="hover:text-miracle-teal transition">Home</a>
+                <a href="#curriculum" class="hover:text-miracle-teal transition">Methodology</a>
+                <a href="#achievements" class="hover:text-miracle-teal transition">Achievements</a>
+                <a href="#team" class="hover:text-miracle-teal transition">Our Team</a>
+                <a href="#locations" class="hover:text-miracle-teal transition">Locations</a>
+                <a href="https://wa.me/917561862377?text=Hi,%20I%20am%20interested%20in%20joining%20Miracle%20FA!" target="_blank" 
+                   class="bg-miracle-teal px-5 py-2 rounded-full text-white hover:bg-white hover:text-miracle-teal transition-all shadow-[0_0_15px_rgba(34,150,166,0.3)] flex items-center gap-2">
+                    <i class="fab fa-whatsapp text-base"></i> Join Now
+                </a>
+            </div>
+
+            <button id="menu-btn" class="lg:hidden text-white text-2xl focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-        <div class="hidden xl:flex items-center gap-6 font-bold uppercase text-[11px] tracking-widest">
-            <a href="#home" class="hover:text-miracle-teal transition">Home</a>
-            <a href="#curriculum" class="hover:text-miracle-teal transition">Methodology</a>
-            <a href="#achievements" class="hover:text-miracle-teal transition">Achievements</a>
-            <a href="#team" class="hover:text-miracle-teal transition">Our Team</a>
-            <a href="#locations" class="hover:text-miracle-teal transition">Locations</a>
+
+        <div id="mobile-menu" class="lg:hidden flex flex-col gap-4 mt-4 items-center text-sm font-bold uppercase tracking-widest pb-4 border-t border-slate-800 pt-4">
+            <a href="#home" class="hover:text-miracle-teal" onclick="toggleMenu()">Home</a>
+            <a href="#curriculum" class="hover:text-miracle-teal" onclick="toggleMenu()">Methodology</a>
+            <a href="#achievements" class="hover:text-miracle-teal" onclick="toggleMenu()">Achievements</a>
+            <a href="#team" class="hover:text-miracle-teal" onclick="toggleMenu()">Our Team</a>
+            <a href="#locations" class="hover:text-miracle-teal" onclick="toggleMenu()">Locations</a>
             <a href="https://wa.me/917561862377?text=Hi,%20I%20am%20interested%20in%20joining%20Miracle%20FA!" target="_blank" 
-               class="bg-miracle-teal px-5 py-2 rounded-full text-white hover:bg-white hover:text-miracle-teal transition-all shadow-[0_0_15px_rgba(34,150,166,0.3)] flex items-center gap-2">
-                <i class="fab fa-whatsapp text-base"></i> Join Now
+               class="bg-miracle-teal px-8 py-3 rounded-full text-white w-full text-center">
+               Join Now
             </a>
         </div>
     </nav>
@@ -101,21 +146,21 @@
             <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80" class="w-full h-full object-cover opacity-30">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-slate-900/90"></div>
         </div>
-        <div class="relative z-10 max-w-5xl">
-            <span class="inline-block py-1 px-3 rounded border border-miracle-gold text-miracle-gold text-xs font-bold tracking-[0.2em] uppercase mb-6 bg-slate-900/50 backdrop-blur">
+        <div class="relative z-10 max-w-5xl px-2">
+            <span class="inline-block py-1 px-3 rounded border border-miracle-gold text-miracle-gold text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-4 md:mb-6 bg-slate-900/50 backdrop-blur">
                 Miracle Football Academy
             </span>
-            <h1 class="text-5xl md:text-8xl font-black italic uppercase mb-6 leading-tight drop-shadow-2xl">
-                Shaping Future <span class="text-gradient">Football Stars</span>
+            <h1 class="text-4xl md:text-7xl lg:text-8xl font-black italic uppercase mb-4 md:mb-6 leading-tight drop-shadow-2xl">
+                Shaping Future <span class="text-gradient block md:inline">Football Stars</span>
             </h1>
-            <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+            <p class="text-gray-300 text-sm md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto font-light leading-relaxed">
                 The official volunteering partner for the <strong>Decathlon Kipsta Cup</strong> & ball boy partner for the <strong>Santosh Trophy</strong>.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#achievements" class="bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-wide hover:bg-miracle-gold transition-colors">
+                <a href="#achievements" class="bg-white text-black px-8 py-3 md:py-4 rounded-full font-bold uppercase tracking-wide hover:bg-miracle-gold transition-colors text-sm md:text-base">
                     View Our Legacy
                 </a>
-                <a href="#locations" class="border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 rounded-full font-bold uppercase tracking-wide hover:bg-miracle-teal hover:border-miracle-teal transition-all">
+                <a href="#locations" class="border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-3 md:py-4 rounded-full font-bold uppercase tracking-wide hover:bg-miracle-teal hover:border-miracle-teal transition-all text-sm md:text-base">
                     Find Nearest Center
                 </a>
             </div>
@@ -124,38 +169,38 @@
 
     <div class="bg-miracle-teal py-8 border-y border-white/10">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/20">
-            <div><h3 class="text-3xl font-black italic">15+</h3><p class="text-[10px] font-bold uppercase tracking-widest opacity-80">Friendly Matches</p></div>
-            <div><h3 class="text-3xl font-black italic">2</h3><p class="text-[10px] font-bold uppercase tracking-widest opacity-80">Players in "Next Legend"</p></div>
-            <div><h3 class="text-3xl font-black italic">4+</h3><p class="text-[10px] font-bold uppercase tracking-widest opacity-80">Major Tournaments</p></div>
-            <div><h3 class="text-3xl font-black italic">100%</h3><p class="text-[10px] font-bold uppercase tracking-widest opacity-80">Professional Coaching</p></div>
+            <div><h3 class="text-2xl md:text-3xl font-black italic">15+</h3><p class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest opacity-80">Friendly Matches</p></div>
+            <div><h3 class="text-2xl md:text-3xl font-black italic">2</h3><p class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest opacity-80">Players in "Next Legend"</p></div>
+            <div><h3 class="text-2xl md:text-3xl font-black italic">4+</h3><p class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest opacity-80">Major Tournaments</p></div>
+            <div><h3 class="text-2xl md:text-3xl font-black italic">100%</h3><p class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest opacity-80">Professional Coaching</p></div>
         </div>
     </div>
 
-    <section id="team" class="py-24 px-6 bg-slate-900 overflow-hidden relative min-h-[700px] flex items-center">
-        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-[700px] h-[700px] bg-miracle-teal/5 rounded-full blur-3xl -z-10"></div>
+    <section id="team" class="py-16 md:py-24 px-4 md:px-6 bg-slate-900 overflow-hidden relative min-h-[700px] flex items-center">
+        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-[300px] md:w-[700px] h-[300px] md:h-[700px] bg-miracle-teal/5 rounded-full blur-3xl -z-10"></div>
         
-        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
             
-            <div class="carousel-scene h-[450px] w-full flex items-center justify-center relative">
+            <div class="carousel-scene h-[350px] md:h-[450px] w-full flex items-center justify-center relative order-1">
                 <div class="carousel-track" id="teamTrack">
                     </div>
             </div>
 
-            <div class="text-left relative z-20 pl-12 md:pl-32">
-                <div class="mb-8">
-                    <h2 class="text-miracle-gold font-bold tracking-[0.2em] uppercase mb-2">Management & Coaching</h2>
-                    <h3 class="text-4xl md:text-5xl font-black uppercase italic text-white mb-6">Meet The Team</h3>
-                    <div class="w-20 h-1 bg-miracle-teal"></div>
+            <div class="text-center lg:text-left relative z-20 px-2 md:pl-24 order-2">
+                <div class="mb-6 md:mb-8">
+                    <h2 class="text-miracle-gold font-bold tracking-[0.2em] uppercase mb-2 text-xs md:text-sm">Management & Coaching</h2>
+                    <h3 class="text-3xl md:text-5xl font-black uppercase italic text-white mb-4 md:mb-6">Meet The Team</h3>
+                    <div class="w-16 md:w-20 h-1 bg-miracle-teal mx-auto lg:mx-0"></div>
                 </div>
 
-                <div id="memberInfo" class="min-h-[200px] transition-all">
+                <div id="memberInfo" class="min-h-[180px] md:min-h-[200px] transition-all">
                     </div>
 
-                <div class="flex gap-4 mt-8">
-                    <button onclick="rotate(1)" class="w-14 h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-xl">
+                <div class="flex gap-4 mt-6 md:mt-8 justify-center lg:justify-start">
+                    <button onclick="rotate(1)" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-lg md:text-xl">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <button onclick="rotate(-1)" class="w-14 h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-xl">
+                    <button onclick="rotate(-1)" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-lg md:text-xl">
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -163,70 +208,70 @@
         </div>
     </section>
 
-    <section id="curriculum" class="py-24 px-6 bg-slate-800/30">
+    <section id="curriculum" class="py-16 md:py-24 px-6 bg-slate-800/30">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-miracle-gold font-bold tracking-[0.2em] uppercase mb-2">Core Structure</h2>
-                <h3 class="text-4xl font-black uppercase italic">Elite Training Methodology</h3>
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-miracle-gold font-bold tracking-[0.2em] uppercase mb-2 text-xs md:text-sm">Core Structure</h2>
+                <h3 class="text-3xl md:text-4xl font-black uppercase italic">Elite Training Methodology</h3>
             </div>
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-slate-900 p-8 rounded-2xl border-t-4 border-miracle-teal hover:-translate-y-2 transition duration-300">
-                    <i class="fas fa-running text-4xl text-miracle-teal mb-6"></i>
-                    <h4 class="text-xl font-bold uppercase italic mb-4">Physical</h4>
+                <div class="bg-slate-900 p-6 md:p-8 rounded-2xl border-t-4 border-miracle-teal hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-running text-3xl md:text-4xl text-miracle-teal mb-4 md:mb-6"></i>
+                    <h4 class="text-lg md:text-xl font-bold uppercase italic mb-4">Physical</h4>
                     <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside"><li>Strength & Conditioning</li><li>Speed & Agility (SAQ)</li><li>Endurance & Stamina</li></ul>
                 </div>
-                <div class="bg-slate-900 p-8 rounded-2xl border-t-4 border-miracle-gold hover:-translate-y-2 transition duration-300">
-                    <i class="fas fa-chess text-4xl text-miracle-gold mb-6"></i>
-                    <h4 class="text-xl font-bold uppercase italic mb-4">Tactical</h4>
+                <div class="bg-slate-900 p-6 md:p-8 rounded-2xl border-t-4 border-miracle-gold hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-chess text-3xl md:text-4xl text-miracle-gold mb-4 md:mb-6"></i>
+                    <h4 class="text-lg md:text-xl font-bold uppercase italic mb-4">Tactical</h4>
                     <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside"><li>Game Awareness</li><li>Positional Play</li><li>Match Simulation (11v11)</li></ul>
                 </div>
-                <div class="bg-slate-900 p-8 rounded-2xl border-t-4 border-miracle-teal hover:-translate-y-2 transition duration-300">
-                    <i class="fas fa-brain text-4xl text-miracle-teal mb-6"></i>
-                    <h4 class="text-xl font-bold uppercase italic mb-4">Mental</h4>
+                <div class="bg-slate-900 p-6 md:p-8 rounded-2xl border-t-4 border-miracle-teal hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-brain text-3xl md:text-4xl text-miracle-teal mb-4 md:mb-6"></i>
+                    <h4 class="text-lg md:text-xl font-bold uppercase italic mb-4">Mental</h4>
                     <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside"><li>Discipline & Behavior</li><li>Confidence Building</li><li>Focus & Concentration</li></ul>
                 </div>
-                <div class="bg-slate-900 p-8 rounded-2xl border-t-4 border-miracle-gold hover:-translate-y-2 transition duration-300">
-                    <i class="fas fa-trophy text-4xl text-miracle-gold mb-6"></i>
-                    <h4 class="text-xl font-bold uppercase italic mb-4">Exposure</h4>
+                <div class="bg-slate-900 p-6 md:p-8 rounded-2xl border-t-4 border-miracle-gold hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-trophy text-3xl md:text-4xl text-miracle-gold mb-4 md:mb-6"></i>
+                    <h4 class="text-lg md:text-xl font-bold uppercase italic mb-4">Exposure</h4>
                     <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside"><li>Youth Leagues</li><li>Internal Tournaments</li><li>Pro Player Visits</li></ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="achievements" class="py-24 px-6 relative overflow-hidden">
+    <section id="achievements" class="py-16 md:py-24 px-6 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-96 h-96 bg-miracle-teal/10 rounded-full blur-3xl -z-10"></div>
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-black uppercase italic mb-12 text-center"><span class="text-miracle-gold">Hall of</span> Fame</h2>
+            <h2 class="text-3xl md:text-5xl font-black uppercase italic mb-12 text-center"><span class="text-miracle-gold">Hall of</span> Fame</h2>
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 p-1 rounded-2xl">
-                    <div class="bg-slate-900 h-full rounded-xl p-8 flex flex-col items-start relative overflow-hidden">
+                    <div class="bg-slate-900 h-full rounded-xl p-6 md:p-8 flex flex-col items-start relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fas fa-medal text-9xl"></i></div>
                         <span class="bg-miracle-gold text-black text-xs font-bold px-3 py-1 rounded uppercase mb-4">Major Honor</span>
-                        <h3 class="text-2xl font-bold uppercase italic mb-4">Santosh Trophy Support</h3>
-                        <p class="text-gray-400">Miracle FA was selected to provide official ball boy support for the prestigious Santosh Trophy State Championship.</p>
+                        <h3 class="text-xl md:text-2xl font-bold uppercase italic mb-4">Santosh Trophy Support</h3>
+                        <p class="text-gray-400 text-sm md:text-base">Miracle FA was selected to provide official ball boy support for the prestigious Santosh Trophy State Championship.</p>
                     </div>
                 </div>
                 <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 p-1 rounded-2xl">
-                    <div class="bg-slate-900 h-full rounded-xl p-8 flex flex-col items-start relative overflow-hidden">
+                    <div class="bg-slate-900 h-full rounded-xl p-6 md:p-8 flex flex-col items-start relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fas fa-star text-9xl"></i></div>
                         <span class="bg-miracle-teal text-white text-xs font-bold px-3 py-1 rounded uppercase mb-4">Talent Hunt</span>
-                        <h3 class="text-2xl font-bold uppercase italic mb-4">India's Next Legend</h3>
-                        <p class="text-gray-400">In the WAWU Tournament, 2 players from Miracle FA were selected for the "India's Next Legend" program.</p>
+                        <h3 class="text-xl md:text-2xl font-bold uppercase italic mb-4">India's Next Legend</h3>
+                        <p class="text-gray-400 text-sm md:text-base">In the WAWU Tournament, 2 players from Miracle FA were selected for the "India's Next Legend" program.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="locations" class="py-24 px-6 bg-slate-800/20">
+    <section id="locations" class="py-16 md:py-24 px-6 bg-slate-800/20">
         <div class="max-w-6xl mx-auto">
-            <h3 class="text-4xl md:text-5xl font-black uppercase italic text-center mb-16">Training Grounds</h3>
+            <h3 class="text-3xl md:text-5xl font-black uppercase italic text-center mb-12 md:mb-16">Training Grounds</h3>
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="group relative bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-miracle-teal transition-all duration-300">
                     <div class="h-48 bg-slate-900 relative overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1556680262-9990363a3e6d?auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-60">
-                        <div class="absolute bottom-4 left-6"><h4 class="text-3xl font-bold uppercase italic text-white">Kaloor</h4></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl md:text-3xl font-bold uppercase italic text-white">Kaloor</h4></div>
                     </div>
                     <div class="p-6">
                         <a href="https://wa.me/917561862377?text=Info%20about%20Kaloor%20Location" target="_blank" class="block w-full text-center bg-slate-700 hover:bg-miracle-teal py-3 rounded-lg font-bold uppercase text-sm tracking-wider transition-colors">Inquire Kaloor Batch</a>
@@ -235,7 +280,7 @@
                 <div class="group relative bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-miracle-teal transition-all duration-300">
                     <div class="h-48 bg-slate-900 relative overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-60">
-                        <div class="absolute bottom-4 left-6"><h4 class="text-3xl font-bold uppercase italic text-white">Arookutty</h4></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl md:text-3xl font-bold uppercase italic text-white">Arookutty</h4></div>
                     </div>
                     <div class="p-6">
                         <a href="https://wa.me/917561862377?text=Info%20about%20Arookutty%20Location" target="_blank" class="block w-full text-center bg-slate-700 hover:bg-miracle-teal py-3 rounded-lg font-bold uppercase text-sm tracking-wider transition-colors">Inquire Arookutty Batch</a>
@@ -245,7 +290,7 @@
         </div>
     </section>
 
-    <footer class="bg-black py-16 px-6 border-t border-slate-900">
+    <footer class="bg-black py-12 md:py-16 px-6 border-t border-slate-900">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
             <div class="text-center md:text-left">
                 <div class="flex items-center gap-2 justify-center md:justify-start mb-4">
@@ -263,6 +308,13 @@
     </footer>
 
     <script>
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('open');
+        }
+        document.getElementById('menu-btn').addEventListener('click', toggleMenu);
+
         const teamMembers = [
             { name: "Imran Babu N", role: "Founder & Manager", img: "founder.png", color: "border-miracle-gold", desc: "The visionary behind Miracle FA, Imran leads the academy with a focus on holistic youth development and management excellence." },
             { name: "Ashkar N.A", role: "Co-Founder & Head Coach", img: "cofounderandheadcoach.png", color: "border-miracle-teal", desc: "As Head Coach, Ashkar designs our elite training curriculum, ensuring every player masters technical skills and tactical intelligence." },
@@ -281,34 +333,31 @@
 
         const track = document.getElementById('teamTrack');
         const infoPanel = document.getElementById('memberInfo');
-        const radius = 350; // Standard 3D Radius
+        let radius = window.innerWidth < 768 ? 160 : 350; // Responsive Radius
         let currDeg = 0;
         let activeIndex = 0;
 
+        // Listen for resize to adjust 3D radius dynamically
+        window.addEventListener('resize', () => {
+            radius = window.innerWidth < 768 ? 160 : 350;
+            updateView();
+        });
+
         function init() {
-            // Create items
             teamMembers.forEach((member, index) => {
                 const el = document.createElement('div');
                 el.className = 'carousel-item';
-                
-                // Calculate position around the circle
                 const angle = (360 / teamMembers.length) * index;
-                
-                // Store angle for updates
                 el.dataset.angle = angle;
-                
                 el.innerHTML = `
                     <div class="carousel-card border-4 ${member.color} relative group">
                         <img src="${member.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
                     </div>
                 `;
-                
-                // Click to rotate to this item
                 el.addEventListener('click', () => {
                     const diff = index - activeIndex;
                     rotate(-diff);
                 });
-
                 track.appendChild(el);
             });
             updateView();
@@ -317,57 +366,39 @@
         function rotate(dir) {
             const step = 360 / teamMembers.length;
             currDeg += dir * step;
-            
-            // Update Active Index logic to handle wrapping correctly
             if(dir === -1) activeIndex = (activeIndex + 1) % teamMembers.length;
             if(dir === 1) activeIndex = (activeIndex - 1 + teamMembers.length) % teamMembers.length;
-            
             updateView();
         }
 
         function updateView() {
-            // Rotate the entire track
             track.style.transform = `rotateY(${currDeg}deg)`;
-
             const items = document.querySelectorAll('.carousel-item');
             
             items.forEach((item, index) => {
-                // Calculate the item's current absolute angle relative to the screen
-                // itemAngle + currDeg = 0 (or 360) means it's in front
                 const itemAngle = parseFloat(item.dataset.angle);
                 const totalAngle = itemAngle + currDeg;
-                
-                // Normalize angle to -180 to 180 to determine "frontness"
                 let normalized = totalAngle % 360;
                 if (normalized > 180) normalized -= 360;
                 if (normalized < -180) normalized += 360;
-                
-                // Calculate depth factor (cosine of angle)
-                // 0deg = 1 (front), 180deg = -1 (back)
                 const rad = normalized * (Math.PI / 180);
                 const depth = Math.cos(rad);
                 
-                // --- THE 3D TRANSFORM MAGIC ---
-                // We keep the item at its ring position: rotateY(angle) translateZ(radius)
-                // But we counter-rotate the card itself so it faces the viewer: rotateY(-totalAngle)
-                
                 item.style.transform = `rotateY(${itemAngle}deg) translateZ(${radius}px) rotateY(${-totalAngle}deg)`;
                 
-                // --- DEPTH STYLING ---
                 const card = item.querySelector('.carousel-card');
                 
-                if (depth > 0.9) { // Front item
+                if (depth > 0.9) { 
                     item.style.opacity = 1;
                     item.style.filter = 'blur(0px)';
                     item.style.zIndex = 20;
-                    card.style.transform = 'scale(1.3)'; // Make front item huge
+                    card.style.transform = 'scale(1.3)';
                     card.querySelector('img').classList.remove('grayscale');
                     card.style.borderColor = teamMembers[index].color.replace('border-', 'var(--') + ')';
                     card.style.boxShadow = "0 0 40px rgba(34, 150, 166, 0.8)";
                 } else {
-                    // Items further back get smaller, darker, blurrier
-                    const scale = 0.5 + (depth + 1) * 0.25; // Scale range 0.5 to 1.0
-                    const blur = Math.abs(normalized) / 10; // More angle = more blur
+                    const scale = 0.5 + (depth + 1) * 0.25; 
+                    const blur = Math.abs(normalized) / 10;
                     
                     item.style.opacity = Math.max(0.2, 0.5 + depth * 0.5);
                     item.style.filter = `blur(${blur}px) brightness(${50 + depth * 50}%)`;
@@ -378,28 +409,22 @@
                 }
             });
 
-            // UPDATE TEXT INFO
             const member = teamMembers[activeIndex];
             infoPanel.innerHTML = `
                 <div class="fade-text">
-                    <h4 class="text-4xl font-bold uppercase text-white mb-2">${member.name}</h4>
-                    <p class="text-sm tracking-[0.2em] uppercase font-bold text-miracle-teal mb-6">${member.role}</p>
-                    <p class="text-gray-300 text-lg leading-relaxed mb-6 border-l-4 border-miracle-gold pl-4">
+                    <h4 class="text-3xl md:text-4xl font-bold uppercase text-white mb-2">${member.name}</h4>
+                    <p class="text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-miracle-teal mb-4 md:mb-6">${member.role}</p>
+                    <p class="text-gray-300 text-base md:text-lg leading-relaxed mb-6 border-l-4 border-miracle-gold pl-4 text-left">
                         ${member.desc}
                     </p>
-                    <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500">
+                    <span class="inline-flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500">
                         <i class="fas fa-check-circle text-miracle-teal"></i> Miracle FA Staff
                     </span>
                 </div>
             `;
         }
 
-        // Start
         init();
-        
-        // Auto Rotate (Optional - uncomment to enable)
-        // setInterval(() => rotate(-1), 4000);
-
     </script>
 </body>
 </html>
