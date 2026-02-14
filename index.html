@@ -205,12 +205,10 @@
                     </div>
 
                 <div class="flex gap-4 mt-6 md:mt-8 justify-center lg:justify-start">
-                    <button onclick="rotate(1)" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-lg md:text-xl">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
                     <button onclick="rotate(-1)" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-lg md:text-xl">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
+                        <i class="fas fa-arrow-left"></i> </button>
+                    <button onclick="rotate(1)" class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-slate-600 hover:bg-miracle-teal hover:border-miracle-teal hover:text-white transition flex items-center justify-center text-gray-400 text-lg md:text-xl">
+                        <i class="fas fa-arrow-right"></i> </button>
                 </div>
                 
                 <div class="block lg:hidden mt-4 text-gray-600 text-[10px] uppercase tracking-widest animate-pulse">
@@ -369,11 +367,11 @@
 
         function handleSwipe() {
             const threshold = 40; 
-            // INVERTED LOGIC HERE for natural drag feel
+            // Swipe Left -> rotate(-1) -> Moves Right (Matches auto-scroll)
             if (touchEndX < touchStartX - threshold) {
-                rotate(-1); // Swipe Left -> Moves Right
+                rotate(-1); 
             } else if (touchEndX > touchStartX + threshold) {
-                rotate(1);  // Swipe Right -> Moves Left
+                rotate(1); 
             }
         }
 
@@ -464,7 +462,6 @@
 
             // Update Text
             const member = teamMembers[activeIndex];
-            // Removing and re-adding class to trigger animation
             infoPanel.classList.remove('fade-text');
             void infoPanel.offsetWidth; // Trigger reflow
             
@@ -482,9 +479,10 @@
             `;
         }
 
+        // AUTO ROTATE: NOW MOVES TO THE RIGHT (rotate -1)
         function startAutoRotate() {
             if(autoRotate) clearInterval(autoRotate);
-            autoRotate = setInterval(() => rotate(1), 3500); 
+            autoRotate = setInterval(() => rotate(-1), 3500); 
         }
 
         function stopAutoRotate() {
